@@ -5,6 +5,7 @@ import react.dom.img
 import styled.css
 import styled.styledDiv
 
+@JsName("default")
 external interface VideoPlayerProps: RProps {
     var video: Video
 }
@@ -12,6 +13,26 @@ external interface VideoPlayerProps: RProps {
 class VideoPlayer : RComponent<VideoPlayerProps, RState>() {
     override fun RBuilder.render() {
         styledDiv {
+            styledDiv {
+                css {
+                    display = Display.flex
+                    marginBottom = 10.px
+                }
+                emailShareButton {
+                    attrs.url = props.video.videoUrl
+                    emailIcon {
+                        attrs.size = 32
+                        attrs.round = true
+                    }
+                }
+                telegramShareButton {
+                    attrs.url = props.video.videoUrl
+                    telegramIcon {
+                        attrs.size = 32
+                        attrs.round = true
+                    }
+                }
+            }
             css {
                 position = Position.absolute
                 top = 10.px
@@ -20,10 +41,8 @@ class VideoPlayer : RComponent<VideoPlayerProps, RState>() {
             h3 {
                 + "${props.video.speaker} : ${props.video.title}"
             }
-            img {
-                attrs {
-                    src = "https://via.placeholder.com/640x360.png?text=Video+Player+Placeholder"
-                }
+            reactPlayer {
+                attrs.url = props.video.videoUrl
             }
         }
     }
