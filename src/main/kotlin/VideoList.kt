@@ -1,4 +1,3 @@
-import kotlinx.browser.window
 import kotlinx.html.js.onClickFunction
 import react.*
 import react.dom.p
