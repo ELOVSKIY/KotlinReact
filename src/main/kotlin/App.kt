@@ -5,7 +5,7 @@ import react.dom.*
 import styled.css
 import styled.styledDiv
 
-class App : RComponent<RProps, RState>() {
+class App : RComponent<RProps, AppState >() {
     override fun RBuilder.render() {
 
         h1 {
@@ -17,12 +17,24 @@ class App : RComponent<RProps, RState>() {
             }
             videoList {
                 videos = unwatchedVideos
+                selectedVideo = state.currentVideo
+                onSelectVideo = { video ->
+                    setState {
+                        currentVideo = video
+                    }
+                }
             }
             h3 {
                 +"Videos watched"
             }
             videoList {
                 videos = watchedVideos
+                selectedVideo = state.currentVideo
+                onSelectVideo = { video ->
+                    setState {
+                        currentVideo = video
+                    }
+                }
             }
         }
         styledDiv {
@@ -41,4 +53,8 @@ class App : RComponent<RProps, RState>() {
             }
         }
     }
+}
+
+external interface AppState : RState {
+    var currentVideo: Video?
 }
