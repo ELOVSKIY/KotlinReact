@@ -1,9 +1,26 @@
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import react.*
-import react.dom.*
+import react.dom.div
+import react.dom.h1
+import react.dom.h3
 
 class App : RComponent<RProps, AppState >() {
-    override fun RBuilder.render() {
 
+    override fun AppState.init() {
+        unwatchedVideos = listOf()
+        watchedVideos = listOf()
+
+        val mainScope = MainScope()
+        mainScope.launch {
+            val videos = fetchVideos();
+            setState {
+                unwatchedVideos = videos;
+            }
+        }
+    }
+
+    override fun RBuilder.render() {
         h1 {
             +"KotlinConf Explorer"
         }
@@ -12,7 +29,7 @@ class App : RComponent<RProps, AppState >() {
                 +"Videos to watch"
             }
             videoList {
-                videos = unwatchedVideos
+                videos = state.unwatchedVideos
                 selectedVideo = state.currentVideo
                 onSelectVideo = { video ->
                     setState {
@@ -24,7 +41,7 @@ class App : RComponent<RProps, AppState >() {
                 +"Videos watched"
             }
             videoList {
-                videos = watchedVideos
+                videos = state.watchedVideos
                 selectedVideo = state.currentVideo
                 onSelectVideo = { video ->
                     setState {
@@ -43,4 +60,6 @@ class App : RComponent<RProps, AppState >() {
 
 external interface AppState : RState {
     var currentVideo: Video?
+    var unwatchedVideos: List<Video>
+    var watchedVideos: List<Video>
 }
